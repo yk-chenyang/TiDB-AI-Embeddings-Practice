@@ -1,17 +1,19 @@
 import pymysql
 import os, openai, json
 import numpy as np
+from dotenv import load_dotenv
 from openai import OpenAI
 
 # read environment variables
-openai.api_key = os.getenv("OPENAI_API_KEY")
+load_dotenv()
+api_key = os.getenv("OPENAI_API_KEY")
 
 # connect to tidb database
 conn = pymysql.connect(host="127.0.0.1", port=62919, user="root", password="", database="test")
 
 cursor = conn.cursor()
 
-client=OpenAI(api_key="OPENAI_API_KEY")
+client=OpenAI()
 
 # read rows that still need an embedding (those w/ empty _vec)
 cursor.execute("SELECT id, description FROM user WHERE description_vec IS NULL")
